@@ -1,0 +1,35 @@
+language: generic
+dist: trusty
+
+matrix:
+  include:
+    - os: linux
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-7
+      env:
+        - CXX=g++-7
+
+    - os: linux
+      addons:
+        apt:
+          sources:
+            - llvm-toolchain-trusty-5.0
+          packages:
+            - clang-5.0
+      env:
+        - CXX=clang++-5.0
+
+before_install:
+  - cmake --version
+  - ${CXX} --version
+
+script:
+  - make release
+  - make test
+
+after_success:
+  - make bench
