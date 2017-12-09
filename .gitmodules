@@ -1,0 +1,8 @@
+[submodule "libs/googletest"]
+	path = libs/googletest
+	url = https://github.com/google/googletest.git
+	ignore = dirty
+[submodule "libs/benchmark"]
+	path = libs/benchmark
+	url = https://github.com/google/benchmark.git
+	ignore = dirty
