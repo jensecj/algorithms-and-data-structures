@@ -1,14 +1,17 @@
-cmake_minimum_required(VERSION 3.2)
+cmake_minimum_required(VERSION 3.10)
 project(algorithms-and-data-structures CXX)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 add_subdirectory(libs/googletest)
 add_subdirectory(libs/benchmark)
 
-set(flags "-std=c++11")
+set(flags "-std=c++17")
 set(debug_flags "-O0 -g1")
 set(release_flags "-O2 -DNDEBUG")
 set(warnings "-Wall -Wextra -Wpedantic -Werror")
+
+# set(CMAKE_CXX_STANDARD 17)
+# set(CMAKE_CXX_STANDARD_REQUIRED on)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${warnings} ${flags}")
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} ${debug_flags}")
@@ -30,8 +33,8 @@ file(GLOB TEST_SOURCES
 add_executable(unit-tests ${TEST_SOURCES})
 target_link_libraries(unit-tests dads gtest_main)
 
-file(GLOB BENCHMARK_SOURCES
-  ${CMAKE_SOURCE_DIR}/benchmarks/algorithms/*.cpp
-  ${CMAKE_SOURCE_DIR}/benchmarks/data-structures/*.cpp)
-add_executable(bench-tests ${BENCHMARK_SOURCES})
-target_link_libraries(bench-tests dads benchmark)
+# file(GLOB BENCHMARK_SOURCES
+#   ${CMAKE_SOURCE_DIR}/benchmarks/algorithms/*.cpp
+#   ${CMAKE_SOURCE_DIR}/benchmarks/data-structures/*.cpp)
+# add_executable(bench-tests ${BENCHMARK_SOURCES})
+# target_link_libraries(bench-tests dads benchmark)

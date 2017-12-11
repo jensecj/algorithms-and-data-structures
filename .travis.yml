@@ -17,13 +17,17 @@ matrix:
       addons:
         apt:
           sources:
+            - ubuntu-toolchain-r-test
             - llvm-toolchain-trusty-5.0
           packages:
+            - libstdc++-7-dev
             - clang-5.0
       env:
         - CXX=clang++-5.0
 
 before_install:
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get -qq update; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then wget -c https://cmake.org/files/v3.10/cmake-3.10.0-Linux-x86_64.tar.gz ; tar xzf cmake-3.10.0-Linux-x86_64.tar.gz ; export PATH=$(pwd)/cmake-3.10.0-Linux-x86_64/bin:$PATH; fi
   - cmake --version
   - ${CXX} --version
 
@@ -32,4 +36,4 @@ script:
   - make test
 
 after_success:
-  - make bench
+  # - make bench
