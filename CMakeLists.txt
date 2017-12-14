@@ -2,8 +2,19 @@ cmake_minimum_required(VERSION 3.10)
 project(algorithms-and-data-structures CXX)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-add_subdirectory(libs/googletest)
-add_subdirectory(libs/benchmark)
+option(BUILD_DADS_TESTS "Build the dads tests" ON)
+option(BUILD_DADS_BENCHMARKS "Build the dads benchmarks" OFF)
+
+if(BUILD_DADS_TESTS)
+  set(BUILD_GMOCK OFF CACHE BOOL "do not build gmock")
+  set(BUILD_GTEST ON CACHE BOOL "we only need gtest")
+  add_subdirectory(libs/googletest)
+endif()
+
+if(BUILD_DADS_BENCHMARKS)
+  set(BENCHMARK_ENABLE_TESTING OFF CACHE BOOL "disable building the benchmark libs tests")
+  add_subdirectory(libs/benchmark)
+endif()
 
 set(flags "-std=c++17")
 set(debug_flags "-O0 -g1")
@@ -27,14 +38,18 @@ file(GLOB DADS_SOURCE_FILES
 add_library(dads ${DADS_SOURCE_FILES})
 target_include_directories(dads PUBLIC ${DADS_INCLUDE_FILES})
 
-file(GLOB TEST_SOURCES
-  ${CMAKE_SOURCE_DIR}/tests/algorithms/*.cpp
-  ${CMAKE_SOURCE_DIR}/tests/data-structures/*.cpp)
-add_executable(unit-tests ${TEST_SOURCES})
-target_link_libraries(unit-tests dads gtest_main)
+if(BUILD_DADS_TESTS)
+  file(GLOB TEST_SOURCES
+    ${CMAKE_SOURCE_DIR}/tests/algorithms/*.cpp
+    ${CMAKE_SOURCE_DIR}/tests/data-structures/*.cpp)
+  add_executable(unit-tests ${TEST_SOURCES})
+  target_link_libraries(unit-tests dads gtest_main)
+endif()
 
-# file(GLOB BENCHMARK_SOURCES
-#   ${CMAKE_SOURCE_DIR}/benchmarks/algorithms/*.cpp
-#   ${CMAKE_SOURCE_DIR}/benchmarks/data-structures/*.cpp)
-# add_executable(bench-tests ${BENCHMARK_SOURCES})
-# target_link_libraries(bench-tests dads benchmark)
+if(BUILD_DADS_BENCHMARKS)
+  file(GLOB BENCHMARK_SOURCES
+    ${CMAKE_SOURCE_DIR}/benchmarks/algorithms/*.cpp
+    ${CMAKE_SOURCE_DIR}/benchmarks/data-structures/*.cpp)
+  add_executable(bench-tests ${BENCHMARK_SOURCES})
+  target_link_libraries(bench-tests dads benchmark)
+endif()
