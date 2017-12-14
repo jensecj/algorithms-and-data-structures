@@ -41,9 +41,11 @@ TEST_F(BinarySearchTree, CanGetMin) {  // NOLINT
   bst->insert(2, 20);
   bst->insert(3, 30);
 
-  auto[k, v] = bst->min();
-  ASSERT_EQ(k, 1);
-  ASSERT_EQ(v, 10);
+  auto kvp = bst->min();
+
+  ASSERT_TRUE(kvp);
+  ASSERT_EQ(std::get<0>(*kvp), 1);
+  ASSERT_EQ(std::get<1>(*kvp), 10);
 }
 
 TEST_F(BinarySearchTree, CanGetMax) {  // NOLINT
@@ -51,9 +53,11 @@ TEST_F(BinarySearchTree, CanGetMax) {  // NOLINT
   bst->insert(2, 20);
   bst->insert(3, 30);
 
-  auto[k, v] = bst->max();
-  ASSERT_EQ(k, 3);
-  ASSERT_EQ(v, 30);
+  auto kvp = bst->max();
+
+  ASSERT_TRUE(kvp);
+  ASSERT_EQ(std::get<0>(*kvp), 3);
+  ASSERT_EQ(std::get<1>(*kvp), 30);
 }
 
 TEST_F(BinarySearchTree, Grows) {  // NOLINT
@@ -69,6 +73,54 @@ TEST_F(BinarySearchTree, CanFindNodePresentInTree) {  // NOLINT
     bst->insert(i, i);
   }
   ASSERT_TRUE(bst->find(321));
+}
+
+TEST_F(BinarySearchTree, CanTraverseInorder) {  // NOLINT
+  bst->insert(3, 3);
+  bst->insert(1, 1);
+  bst->insert(5, 5);
+  bst->insert(0, 0);
+  bst->insert(2, 2);
+  bst->insert(4, 4);
+  bst->insert(6, 6);
+
+  std::string s;
+  bst->inorder(
+      [&s](std::tuple<int, int> n) { s += std::to_string(std::get<1>(n)); });
+
+  ASSERT_EQ("0123456", s);
+}
+
+TEST_F(BinarySearchTree, CanTraversePreorder) {  // NOLINT
+  bst->insert(3, 3);
+  bst->insert(1, 1);
+  bst->insert(5, 5);
+  bst->insert(0, 0);
+  bst->insert(2, 2);
+  bst->insert(4, 4);
+  bst->insert(6, 6);
+
+  std::string s;
+  bst->preorder(
+      [&s](std::tuple<int, int> n) { s += std::to_string(std::get<1>(n)); });
+
+  ASSERT_EQ("3102546", s);
+}
+
+TEST_F(BinarySearchTree, CanTraversePostorder) {  // NOLINT
+  bst->insert(3, 3);
+  bst->insert(1, 1);
+  bst->insert(5, 5);
+  bst->insert(0, 0);
+  bst->insert(2, 2);
+  bst->insert(4, 4);
+  bst->insert(6, 6);
+
+  std::string s;
+  bst->postorder(
+      [&s](std::tuple<int, int> n) { s += std::to_string(std::get<1>(n)); });
+
+  ASSERT_EQ("0214653", s);
 }
 
 //////////
