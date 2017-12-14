@@ -20,5 +20,5 @@ Tests and benchmarks are run with `make test && make bench`.
 # Algorithms
 -
 
-# Data Structures
+# [Data Structures](https://github.com/jensecj/algorithms-and-data-structures/tree/master/src/data-structures)
 - [Binary Search Tree](https://github.com/jensecj/algorithms-and-data-structures/tree/master/src/data-structures/binary_search_tree)

@@ -66,6 +66,17 @@ class binary_search_tree {
     return std::unique_ptr<binary_search_tree<K, V>>(
         new binary_search_tree<K, V>);
   }
+  static std::unique_ptr<binary_search_tree<K, V>> from(
+      std::initializer_list<std::tuple<K, V>> elements) {
+    auto bst =
+        std::unique_ptr<binary_search_tree<K, V>>(new binary_search_tree<K, V>);
+
+    for (auto kvp : elements) {
+      bst->insert(std::get<0>(kvp), std::get<1>(kvp));
+    }
+
+    return bst;
+  }
 
   binary_search_tree(const binary_search_tree &) = delete;
   binary_search_tree &operator=(const binary_search_tree &) = delete;

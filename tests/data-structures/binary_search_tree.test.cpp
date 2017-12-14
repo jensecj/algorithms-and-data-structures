@@ -75,15 +75,17 @@ TEST_F(BinarySearchTree, CanFindNodePresentInTree) {  // NOLINT
   ASSERT_TRUE(bst->find(321));
 }
 
-TEST_F(BinarySearchTree, CanTraverseInorder) {  // NOLINT
-  bst->insert(3, 3);
-  bst->insert(1, 1);
-  bst->insert(5, 5);
-  bst->insert(0, 0);
-  bst->insert(2, 2);
-  bst->insert(4, 4);
-  bst->insert(6, 6);
+class TraversableBinarySearchTree : public ::testing::Test {
+ protected:
+  std::unique_ptr<binary_search_tree<int, int>> bst;
+  void SetUp() override {
+    bst = binary_search_tree<int, int>::from(
+        {{3, 3}, {1, 1}, {5, 5}, {0, 0}, {2, 2}, {4, 4}, {6, 6}});
+  }
+  void TearDown() override { bst.reset(); }
+};
 
+TEST_F(TraversableBinarySearchTree, CanTraverseInorder) {  // NOLINT
   std::string s;
   bst->inorder(
       [&s](std::tuple<int, int> n) { s += std::to_string(std::get<1>(n)); });
@@ -91,15 +93,7 @@ TEST_F(BinarySearchTree, CanTraverseInorder) {  // NOLINT
   ASSERT_EQ("0123456", s);
 }
 
-TEST_F(BinarySearchTree, CanTraversePreorder) {  // NOLINT
-  bst->insert(3, 3);
-  bst->insert(1, 1);
-  bst->insert(5, 5);
-  bst->insert(0, 0);
-  bst->insert(2, 2);
-  bst->insert(4, 4);
-  bst->insert(6, 6);
-
+TEST_F(TraversableBinarySearchTree, CanTraversePreorder) {  // NOLINT
   std::string s;
   bst->preorder(
       [&s](std::tuple<int, int> n) { s += std::to_string(std::get<1>(n)); });
@@ -107,15 +101,7 @@ TEST_F(BinarySearchTree, CanTraversePreorder) {  // NOLINT
   ASSERT_EQ("3102546", s);
 }
 
-TEST_F(BinarySearchTree, CanTraversePostorder) {  // NOLINT
-  bst->insert(3, 3);
-  bst->insert(1, 1);
-  bst->insert(5, 5);
-  bst->insert(0, 0);
-  bst->insert(2, 2);
-  bst->insert(4, 4);
-  bst->insert(6, 6);
-
+TEST_F(TraversableBinarySearchTree, CanTraversePostorder) {  // NOLINT
   std::string s;
   bst->postorder(
       [&s](std::tuple<int, int> n) { s += std::to_string(std::get<1>(n)); });
