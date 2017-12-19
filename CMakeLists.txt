@@ -31,12 +31,9 @@ set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} ${release_flags}")
 set(DADS_INCLUDE_FILES
   ${CMAKE_SOURCE_DIR}/src/algorithms/
   ${CMAKE_SOURCE_DIR}/src/data-structures/)
-file(GLOB DADS_SOURCE_FILES
-  ${CMAKE_SOURCE_DIR}/src/algorithms/**/*.cpp
-  ${CMAKE_SOURCE_DIR}/src/data-structures/**/*.cpp)
 
-add_library(dads ${DADS_SOURCE_FILES})
-target_include_directories(dads PUBLIC ${DADS_INCLUDE_FILES})
+add_library(dads INTERFACE)
+target_include_directories(dads INTERFACE ${DADS_INCLUDE_FILES})
 
 if(BUILD_DADS_TESTS)
   file(GLOB TEST_SOURCES
