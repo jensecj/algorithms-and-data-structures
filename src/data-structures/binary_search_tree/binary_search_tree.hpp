@@ -17,11 +17,11 @@
 #include <optional>
 #include <tuple>
 
-namespace dads {
+namespace dads::trees {
 
 // we can force weak ordering on template-parameters with concepts/constraints
 // in c++20
-template <class K, class V>
+template <typename K, typename V>
 class binary_search_tree {
  private:
   struct node {
@@ -30,7 +30,8 @@ class binary_search_tree {
     node *left;
     node *right;
 
-    node(K k, V d) : key(k), value(d), left(nullptr), right(nullptr) {}
+    node(K k, V v)
+        : key(std::move(k)), value(v), left(nullptr), right(nullptr) {}
 
     node(const node &) = delete;
     node &operator=(const node &) = default;
@@ -51,7 +52,7 @@ class binary_search_tree {
 
   node *_root{nullptr};
   int _nodes{0};
-  // private constructor, use empty() to make a new binary_search_tree
+  // private constructor, use make() to make a new binary_search_tree
   binary_search_tree() = default;
 
   node *find_recursive(node *n, K key);
@@ -62,11 +63,11 @@ class binary_search_tree {
   void postorder(node *n, std::function<void(std::tuple<K, V>)> callback);
 
  public:
-  static std::unique_ptr<binary_search_tree<K, V>> empty() {
+  static std::unique_ptr<binary_search_tree<K, V>> make() {
     return std::unique_ptr<binary_search_tree<K, V>>(
         new binary_search_tree<K, V>);
   }
-  static std::unique_ptr<binary_search_tree<K, V>> from(
+  static std::unique_ptr<binary_search_tree<K, V>> make(
       std::initializer_list<std::tuple<K, V>> elements) {
     auto bst =
         std::unique_ptr<binary_search_tree<K, V>>(new binary_search_tree<K, V>);
@@ -103,7 +104,7 @@ class binary_search_tree {
 
 // returns true is data was inserted,
 // false if it was already in the tree
-template <class K, class V>
+template <typename K, typename V>
 bool binary_search_tree<K, V>::insert(K key, V value) {
   // if the root is empty we're inserting into a new tree
   if (_root == nullptr) {
@@ -143,7 +144,7 @@ bool binary_search_tree<K, V>::insert(K key, V value) {
 
 // returns true if the key was removed,
 // false if key was not found in the tree
-template <class K, class V>
+template <typename K, typename V>
 bool binary_search_tree<K, V>::remove(K key) {
   node *cur = _root;
   node *parent = nullptr;
@@ -256,7 +257,7 @@ bool binary_search_tree<K, V>::remove(K key) {
   return false;
 }
 
-template <class K, class V>
+template <typename K, typename V>
 typename binary_search_tree<K, V>::node *
 binary_search_tree<K, V>::find_recursive(node *n, K key) {
   if (n == nullptr) {
@@ -273,7 +274,7 @@ binary_search_tree<K, V>::find_recursive(node *n, K key) {
   return find_recursive(n->right, key);
 }
 
-template <class K, class V>
+template <typename K, typename V>
 typename binary_search_tree<K, V>::node *
 binary_search_tree<K, V>::find_iterative(node *n, K key) {
   node *cur = n;
@@ -292,7 +293,7 @@ binary_search_tree<K, V>::find_iterative(node *n, K key) {
 }
 
 // traverse down the tree, looking for some key
-template <class K, class V>
+template <typename K, typename V>
 std::optional<V> binary_search_tree<K, V>::find(K key) {
   // node *n = find_recursive(_root, key);
   node *n = find_iterative(_root, key);
@@ -300,9 +301,11 @@ std::optional<V> binary_search_tree<K, V>::find(K key) {
 }
 
 // returns the (key,value) pair of the smallest value from the tree
-template <class K, class V>
+template <typename K, typename V>
 std::optional<std::tuple<K, V>> binary_search_tree<K, V>::min() {
-  if (_root == nullptr) return std::nullopt;
+  if (_root == nullptr) {
+    return std::nullopt;
+  }
 
   node *cur = _root;
   while (cur->left != nullptr) {
@@ -312,9 +315,11 @@ std::optional<std::tuple<K, V>> binary_search_tree<K, V>::min() {
 }
 
 // returns the (key,value) pair of the biggest value from the tree
-template <class K, class V>
+template <typename K, typename V>
 std::optional<std::tuple<K, V>> binary_search_tree<K, V>::max() {
-  if (_root == nullptr) return std::nullopt;
+  if (_root == nullptr) {
+    return std::nullopt;
+  }
 
   node *cur = _root;
   while (cur->right != nullptr) {
@@ -324,10 +329,10 @@ std::optional<std::tuple<K, V>> binary_search_tree<K, V>::max() {
 }
 
 // how many levels the tree has
-template <class K, class V>
+template <typename K, typename V>
 int binary_search_tree<K, V>::height() {
   if (_root == nullptr) {
-    return -1;
+    return 0;
   }
 
   node *cur_left = _root;
@@ -350,12 +355,12 @@ int binary_search_tree<K, V>::height() {
 }
 
 // the number of nodes in the tree
-template <class K, class V>
+template <typename K, typename V>
 int binary_search_tree<K, V>::size() {
   return _nodes;
 }
 
-template <class K, class V>
+template <typename K, typename V>
 void binary_search_tree<K, V>::inorder(
     node *n, std::function<void(std::tuple<K, V>)> callback) {
   if (n->left != nullptr) {
@@ -369,13 +374,13 @@ void binary_search_tree<K, V>::inorder(
   }
 }
 
-template <class K, class V>
+template <typename K, typename V>
 void binary_search_tree<K, V>::inorder(
     std::function<void(std::tuple<K, V>)> callback) {
   inorder(_root, callback);
 }
 
-template <class K, class V>
+template <typename K, typename V>
 void binary_search_tree<K, V>::preorder(
     node *n, std::function<void(std::tuple<K, V>)> callback) {
   callback({n->key, n->value});
@@ -389,13 +394,13 @@ void binary_search_tree<K, V>::preorder(
   }
 }
 
-template <class K, class V>
+template <typename K, typename V>
 void binary_search_tree<K, V>::preorder(
     std::function<void(std::tuple<K, V>)> callback) {
   preorder(_root, callback);
 }
 
-template <class K, class V>
+template <typename K, typename V>
 void binary_search_tree<K, V>::postorder(
     node *n, std::function<void(std::tuple<K, V>)> callback) {
   if (n->left != nullptr) {
@@ -409,12 +414,12 @@ void binary_search_tree<K, V>::postorder(
   callback({n->key, n->value});
 }
 
-template <class K, class V>
+template <typename K, typename V>
 void binary_search_tree<K, V>::postorder(
     std::function<void(std::tuple<K, V>)> callback) {
   postorder(_root, callback);
 }
 
-}  // namespace dads
+}  // namespace dads::trees
 
 #endif
