@@ -19,7 +19,7 @@ endif()
 set(flags "-std=c++17")
 set(debug_flags "-O0 -g1")
 set(release_flags "-O2 -DNDEBUG")
-set(warnings "-Wall -Wextra -Wpedantic -Werror")
+set(warnings "-Wall -Wextra -Wpedantic")
 
 # set(CMAKE_CXX_STANDARD 17)
 # set(CMAKE_CXX_STANDARD_REQUIRED on)
@@ -28,9 +28,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${warnings} ${flags}")
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} ${debug_flags}")
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} ${release_flags}")
 
-set(DADS_INCLUDE_FILES
-  ${CMAKE_SOURCE_DIR}/src/algorithms/
-  ${CMAKE_SOURCE_DIR}/src/data-structures/)
+set(DADS_INCLUDE_FILES ${CMAKE_SOURCE_DIR}/src/)
 
 add_library(dads INTERFACE)
 target_include_directories(dads INTERFACE ${DADS_INCLUDE_FILES})

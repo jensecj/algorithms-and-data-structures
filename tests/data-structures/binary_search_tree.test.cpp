@@ -6,7 +6,7 @@
 
 #include <gtest/gtest.h>
 
-#include "binary_search_tree/binary_search_tree.hpp"
+#include <data-structures/binary_search_tree.hpp>
 
 using dads::trees::binary_search_tree;
 
