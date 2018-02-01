@@ -1,7 +1,7 @@
 #ifndef GRAPH_HPP
 #define GRAPH_HPP
 /*
-  A graph structure.
+  A minimal graph structure.
   Can use either an adjacency list or an adjacency matrix as a
   representation for edges between nodes.
 */
@@ -23,6 +23,14 @@ class node_store {
 };
 
 class adjacency_list : public node_store {
+  /*
+    In an adjacency list, each node keeps a list of it's edges to other nodes
+    that their costs.
+    If the nodes in the graph have a relatively small degree, then this can save
+    a lot of space for big graphs.
+    But if we have a graph where most nodes have edges to most other nodes, we
+    end up with a lot of double-record-keeping.
+   */
  private:
   std::unordered_map<int, std::unordered_map<int, int>> list;
 
@@ -31,8 +39,10 @@ class adjacency_list : public node_store {
 
   std::vector<int> nodes() override {
     std::vector<int> ns;
-    for (auto kvp : list) {
-      ns.push_back(std::get<0>(kvp));
+
+    // nodes are saved as (node, edges[]) pairs, grab all nodes
+    for (auto pair : list) {
+      ns.push_back(std::get<0>(pair));
     }
 
     return ns;
@@ -40,8 +50,10 @@ class adjacency_list : public node_store {
 
   std::vector<int> neighbours(int n) override {
     std::vector<int> ns;
-    for (auto kvp : list[n]) {
-      ns.push_back(std::get<0>(kvp));
+    // the neighbours of a node are stores a list of (node, weight) pairs, grab
+    // all neighbours
+    for (auto pair : list[n]) {
+      ns.push_back(std::get<0>(pair));
     }
 
     return ns;
@@ -52,6 +64,10 @@ class adjacency_list : public node_store {
 
 template <const std::size_t N>
 class adjacency_matrix : public node_store {
+  /*
+    An adjacency matrix stores all nodes and their edges as a 2d-matrix, where
+    graph[A][B] indicates the weight of the edge from A to B.
+   */
  private:
   std::vector<std::vector<int>> matrix;
 
@@ -60,7 +76,7 @@ class adjacency_matrix : public node_store {
 
   void add_edge(int u, int v, int weight) override { matrix[u][v] = weight; }
 
-  std::vector<int> nodes() {
+  std::vector<int> nodes() override {
     std::vector<int> ns;
 
     for (std::size_t i = 0; i < N; i++) {

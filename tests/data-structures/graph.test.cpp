@@ -20,13 +20,17 @@ class Graph_AdjacencyList : public ::testing::Test {
   void SetUp() override { G = std::make_unique<graph<adjacency_list>>(); }
 };
 
-TEST_F(Graph_AdjacencyList, CanAddEdge) {  // NOLINT
+TEST_F(Graph_AdjacencyList, CanAddEdges) {  // NOLINT
   G->add_edge(0, 1, 5);
+  G->add_edge(1, 0, 3);
 
   int u = G->neighbours(0)[0];
-
   ASSERT_EQ(u, 1);
   ASSERT_EQ(G->weight(0, u), 5);
+
+  int v = G->neighbours(1)[0];
+  ASSERT_EQ(v, 0);
+  ASSERT_EQ(G->weight(1, v), 3);
 }
 
 TEST_F(Graph_AdjacencyList, CanAddBiEdge) {  // NOLINT
@@ -61,13 +65,17 @@ class Graph_AdjacencyMatrix : public ::testing::Test {
   void SetUp() override { G = std::make_unique<graph<adj_matrix>>(); }
 };
 
-TEST_F(Graph_AdjacencyMatrix, CanAddEdge) {  // NOLINT
+TEST_F(Graph_AdjacencyMatrix, CanAddEdges) {  // NOLINT
   G->add_edge(0, 1, 5);
+  G->add_edge(1, 0, 3);
 
   int u = G->neighbours(0)[0];
-
   ASSERT_EQ(u, 1);
   ASSERT_EQ(G->weight(0, u), 5);
+
+  int v = G->neighbours(1)[0];
+  ASSERT_EQ(v, 0);
+  ASSERT_EQ(G->weight(1, v), 3);
 }
 
 TEST_F(Graph_AdjacencyMatrix, CanAddBiEdge) {  // NOLINT
