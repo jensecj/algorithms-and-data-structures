@@ -15,10 +15,14 @@ and link the built library against your target:
 
 Alternatively you can clone the repo, and build the library yourself by running `make`.
 
-Tests and benchmarks are run with `make test && make bench`.
+Tests and benchmarks are run with `make test && make bench**.
 
-# Algorithms
--
+# [Algorithms](https://github.com/jensecj/algorithms-and-data-structures/tree/master/src/algorithms)
+## Graphs
+- [Breadth First Search](https://github.com/jensecj/algorithms-and-data-structures/tree/master/src/algorithms/breadth_first_search.hpp)
+- [Depth First Search](https://github.com/jensecj/algorithms-and-data-structures/tree/master/src/algorithms/depth_first_search.hpp)
+- [Iterative Deepening Search](https://github.com/jensecj/algorithms-and-data-structures/tree/master/src/algorithms/iterative_deepening_search.hpp)
+
 
 # [Data Structures](https://github.com/jensecj/algorithms-and-data-structures/tree/master/src/data-structures)
-- [Binary Search Tree](https://github.com/jensecj/algorithms-and-data-structures/tree/master/src/data-structures/binary_search_tree)
+- [Binary Search Tree](https://github.com/jensecj/algorithms-and-data-structures/tree/master/src/data-structures/binary_search_tree.hpp)
