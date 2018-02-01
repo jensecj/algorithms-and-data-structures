@@ -18,8 +18,9 @@ namespace {
 class BinarySearchTree : public ::testing::Test {
  protected:
   std::unique_ptr<binary_search_tree<int, int>> bst;
-  void SetUp() override { bst = binary_search_tree<int, int>::make(); }
-  void TearDown() override { bst.reset(); }
+  void SetUp() override {
+    bst = std::make_unique<binary_search_tree<int, int>>();
+  }
 };
 
 TEST_F(BinarySearchTree, EmptyTreeHasZeroSizeAndHeight) {  // NOLINT
@@ -79,10 +80,10 @@ class TraversableBinarySearchTree : public ::testing::Test {
  protected:
   std::unique_ptr<binary_search_tree<int, int>> bst;
   void SetUp() override {
-    bst = binary_search_tree<int, int>::make(
-        {{3, 3}, {1, 1}, {5, 5}, {0, 0}, {2, 2}, {4, 4}, {6, 6}});
+    std::initializer_list<std::tuple<int, int>> elements = {
+        {3, 3}, {1, 1}, {5, 5}, {0, 0}, {2, 2}, {4, 4}, {6, 6}};
+    bst = std::make_unique<binary_search_tree<int, int>>(elements);
   }
-  void TearDown() override { bst.reset(); }
 };
 
 TEST_F(TraversableBinarySearchTree, CanTraverseInorder) {  // NOLINT
@@ -115,8 +116,9 @@ TEST_F(TraversableBinarySearchTree, CanTraversePostorder) {  // NOLINT
 class IntBinarySearchTree : public ::testing::Test {
  protected:
   std::unique_ptr<binary_search_tree<int, int>> bst;
-  void SetUp() override { bst = binary_search_tree<int, int>::make(); }
-  void TearDown() override { bst.reset(); }
+  void SetUp() override {
+    bst = std::make_unique<binary_search_tree<int, int>>();
+  }
 };
 
 TEST_F(IntBinarySearchTree, CanInsert) {  // NOLINT
@@ -142,8 +144,9 @@ TEST_F(IntBinarySearchTree, CanRemove) {  // NOLINT
 class StringBinarySearchTree : public ::testing::Test {
  protected:
   std::unique_ptr<binary_search_tree<std::string, int>> bst;
-  void SetUp() override { bst = binary_search_tree<std::string, int>::make(); }
-  void TearDown() override { bst.reset(); }
+  void SetUp() override {
+    bst = std::make_unique<binary_search_tree<std::string, int>>();
+  }
 };
 
 TEST_F(StringBinarySearchTree, CanInsert) {  // NOLINT

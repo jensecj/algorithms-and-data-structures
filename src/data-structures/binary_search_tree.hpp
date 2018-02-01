@@ -31,7 +31,10 @@ class binary_search_tree {
     node *right;
 
     node(K k, V v)
-        : key(std::move(k)), value(v), left(nullptr), right(nullptr) {}
+        : key(std::move(k)),
+          value(std::move(v)),
+          left(nullptr),
+          right(nullptr) {}
 
     node(const node &) = delete;
     node &operator=(const node &) = default;
@@ -52,8 +55,6 @@ class binary_search_tree {
 
   node *_root{nullptr};
   int _nodes{0};
-  // private constructor, use make() to make a new binary_search_tree
-  binary_search_tree() = default;
 
   node *find_recursive(node *n, K key);
   node *find_iterative(node *n, K key);
@@ -63,20 +64,11 @@ class binary_search_tree {
   void postorder(node *n, std::function<void(std::tuple<K, V>)> callback);
 
  public:
-  static std::unique_ptr<binary_search_tree<K, V>> make() {
-    return std::unique_ptr<binary_search_tree<K, V>>(
-        new binary_search_tree<K, V>);
-  }
-  static std::unique_ptr<binary_search_tree<K, V>> make(
-      std::initializer_list<std::tuple<K, V>> elements) {
-    auto bst =
-        std::unique_ptr<binary_search_tree<K, V>>(new binary_search_tree<K, V>);
-
+  binary_search_tree() = default;
+  binary_search_tree(std::initializer_list<std::tuple<K, V>> elements) {
     for (auto kvp : elements) {
-      bst->insert(std::get<0>(kvp), std::get<1>(kvp));
+      insert(std::get<0>(kvp), std::get<1>(kvp));
     }
-
-    return bst;
   }
 
   binary_search_tree(const binary_search_tree &) = delete;
