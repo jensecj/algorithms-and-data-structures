@@ -97,17 +97,13 @@ class graph {
  private:
   std::unique_ptr<T> _nodes;
 
-  graph() : _nodes(std::move(std::make_unique<T>())){};
-
   graph(const graph &) = delete;
   graph &operator=(const graph &) = delete;
   graph(graph &&) = delete;
   graph &operator=(graph &&) = delete;
 
  public:
-  static std::unique_ptr<graph<T>> make() {
-    return std::unique_ptr<graph<T>>(new graph<T>());
-  }
+  graph() : _nodes(std::move(std::make_unique<T>())){};
 
   void add_edge(int u, int v, int weight);
   void add_bi_edge(int u, int v, int weight);

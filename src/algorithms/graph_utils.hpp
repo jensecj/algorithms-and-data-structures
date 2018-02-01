@@ -34,7 +34,7 @@ static std::string to_csv(T& graph) {
 
 template <typename T>
 static std::unique_ptr<T> from_csv(std::string& csv) {
-  auto G = T::make();
+  auto G = std::make_unique<T>();
 
   std::istringstream ss(csv);
   std::string token;

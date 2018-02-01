@@ -17,8 +17,7 @@ namespace {
 class Graph_AdjacencyList : public ::testing::Test {
  protected:
   std::unique_ptr<graph<adjacency_list>> G;
-  void SetUp() override { G = graph<adjacency_list>::make(); }
-  void TearDown() override { G.reset(); }
+  void SetUp() override { G = std::make_unique<graph<adjacency_list>>(); }
 };
 
 TEST_F(Graph_AdjacencyList, CanAddEdge) {  // NOLINT
@@ -59,8 +58,7 @@ typedef adjacency_matrix<10> adj_matrix;
 class Graph_AdjacencyMatrix : public ::testing::Test {
  protected:
   std::unique_ptr<graph<adj_matrix>> G;
-  void SetUp() override { G = graph<adj_matrix>::make(); }
-  void TearDown() override { G.reset(); }
+  void SetUp() override { G = std::make_unique<graph<adj_matrix>>(); }
 };
 
 TEST_F(Graph_AdjacencyMatrix, CanAddEdge) {  // NOLINT

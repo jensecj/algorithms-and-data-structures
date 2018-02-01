@@ -17,8 +17,7 @@ namespace {
 class SomeGraph : public ::testing::Test {
  protected:
   std::unique_ptr<graph<adjacency_list>> G;
-  void SetUp() override { G = graph<adjacency_list>::make(); }
-  void TearDown() override { G.reset(); }
+  void SetUp() override { G = std::make_unique<graph<adjacency_list>>(); }
 };
 
 TEST_F(SomeGraph, CanConvertFromCsvToGraph) {  // NOLINT
