@@ -12,18 +12,20 @@ using dads::graphs::graph;
 namespace dads::graphs {
 
 template <typename T>
-static std::string to_csv(T& graph) {
+static std::string to_csv(T& graph, const char seperator = ' ') {
   std::ostringstream ss;
 
-  auto gs = graph.nodes();
-  std::sort(std::begin(gs), std::end(gs));
+  // we store all nodes and their neighbours in sorted order, just to make
+  // testing easier.
+  auto nodes = graph.nodes();
+  std::sort(std::begin(nodes), std::end(nodes));
 
-  for (auto u : gs) {
-    auto ns = graph.neighbours(u);
-    std::sort(std::begin(ns), std::end(ns));
+  for (auto u : nodes) {
+    auto neighbours = graph.neighbours(u);
+    std::sort(std::begin(neighbours), std::end(neighbours));
 
-    for (auto v : ns) {
-      ss << u << "," << v << "," << graph.weight(u, v) << " ";
+    for (auto v : neighbours) {
+      ss << u << "," << v << "," << graph.weight(u, v) << seperator;
     }
   }
 
@@ -33,22 +35,24 @@ static std::string to_csv(T& graph) {
 }
 
 template <typename T>
-static std::unique_ptr<T> from_csv(std::string& csv) {
+static std::unique_ptr<T> from_csv(std::string& csv,
+                                   const char seperator = ' ') {
   auto G = std::make_unique<T>();
 
   std::istringstream ss(csv);
   std::string token;
-  while (std::getline(ss, token, ' ')) {
-    std::vector<int> nums(3);
+  while (std::getline(ss, token, seperator)) {
+    // the node record saves is on the form (from, to, weight)
+    std::vector<int> record(3);
 
     std::istringstream line(token);
 
     for (int i = 0; i < 3; i++) {
       std::getline(line, token, ',');
-      nums[i] = std::stoi(token);
+      record[i] = std::stoi(token);
     }
 
-    G->add_edge(nums[0], nums[1], nums[2]);
+    G->add_edge(record[0], record[1], record[2]);
   }
 
   return G;
